@@ -3,7 +3,7 @@ var mongoose = require("mongoose")
 var MONGODB_URI = process.env.MONGODB_URI
 
 module.exports = () => {
-    mongoose.connect(MONGODB_URI);
+    mongoose.openUri(MONGODB_URI);
 
     mongoose.connection.on('open', () => {
         console.log('MongoDB: Connected');
