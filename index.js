@@ -11,12 +11,12 @@ app.get('/', (req, res) => {
 
 io.on('connect', (client) => {
     client.on('join_room', (data) => {
-        const roomId = data.roomId
+        const {userId, roomId} = data
         client.join(roomId)
 
-        io.to(room).emit('join', {
-            message: `${id} has joined the chat room`,
-            id: id,
+        io.to(roomId).emit('join', {
+            message: `${userId} has joined the chat room`,
+            userId: userId,
             created_at: Date.now(),
         })
 
