@@ -4,32 +4,20 @@ const http = require('http')
 const server = http.createServer(app)
 const { Server } = require("socket.io")
 const io = new Server(server)
-// const mongo = require("./mongo")
-// const message = require("./message")
 
 app.get('/', (req, res) => {
     res.send("Server is running.")
 })
-
-// mongo()
 
 io.on('connect', (client) => {
     client.on('join_room', (data) => {
         const roomId = data.roomId
         client.join(roomId)
 
-        /*io.to(room).emit('join', {
+        io.to(room).emit('join', {
             message: `${id} has joined the chat room`,
             id: id,
             created_at: Date.now(),
-        })*/
-
-        message.find({
-            roomId: roomId
-        }).then((messages) => {
-            client.emit('old_messages', messages)
-        }).catch((err) => {
-            console.log(err)
         })
 
         let typingTimerId
@@ -43,14 +31,6 @@ io.on('connect', (client) => {
                 userId: data.userId,
                 message: data.message,
             })
-
-            new message({
-                message: data.message,
-                roomId: data.roomId,
-                userId: data.userId,
-            }).save((err) => {
-                console.log(err)
-              });
         })
     })
 })
