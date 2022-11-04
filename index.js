@@ -40,7 +40,7 @@ io.on('connect', (client) => {
         client.on('message', (data) => {
             console.log(data)
             io.to(roomId).emit('message', {
-                userId: userId,
+                userId: data.userId,
                 message: data.message,
             })
 
