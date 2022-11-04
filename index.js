@@ -48,7 +48,9 @@ io.on('connect', (client) => {
                 message: data.message,
                 roomId: data.roomId,
                 userId: data.userId,
-            }).save();
+            }).save((err) => {
+                console.log(err)
+              });
         })
     })
 })
