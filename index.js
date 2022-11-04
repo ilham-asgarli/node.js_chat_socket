@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 
 io.on('connect', (client) => {
     client.on('join_room', (data) => {
-        const {userId, roomId} = data
+        const { userId, roomId } = data
         client.join(roomId)
 
         io.to(roomId).emit('join', {
@@ -19,6 +19,8 @@ io.on('connect', (client) => {
             userId: userId,
             created_at: Date.now(),
         })
+
+        client.broadcast.to(roomId).emit('online', true)
 
         let typingTimerId
         client.on('typing', (data) => {
@@ -33,15 +35,20 @@ io.on('connect', (client) => {
                 created_at: Date.now(),
             })
         })
+
+        client.on("disconnect", (reason) => {
+            console.log(reason)
+            client.broadcast.to(roomId).emit('online', false)
+        })
     })
 })
 
-function typing(client, room, isTyping, typingTimerId) {
+function typing(client, roomId, isTyping, typingTimerId) {
     console.log(isTyping)
-    client.broadcast.to(room).emit('typing', isTyping)
+    client.broadcast.to(roomId).emit('typing', isTyping)
 
     if (isTyping) {
-        client.broadcast.to(room).emit('typing', isTyping)
+        client.broadcast.to(roomId).emit('typing', isTyping)
 
         if (typingTimerId) {
             clearTimeout(typingTimerId)
@@ -50,7 +57,7 @@ function typing(client, room, isTyping, typingTimerId) {
 
         typingTimerId = setTimeout(() => {
             console.log(false)
-            client.broadcast.to(room).emit('typing', false)
+            client.broadcast.to(roomId).emit('typing', false)
         }, 2000)
 
         return typingTimerId
