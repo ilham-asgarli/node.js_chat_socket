@@ -20,7 +20,10 @@ io.on('connect', (client) => {
             created_at: Date.now(),
         })
 
-        client.broadcast.to(roomId).emit('online', true)
+        client.broadcast.to(roomId).emit('online', {
+            isOnline: true,
+            userId: userId,
+        })
 
         let typingTimerId
         client.on('typing', (data) => {
@@ -38,7 +41,10 @@ io.on('connect', (client) => {
 
         client.on("disconnect", (reason) => {
             console.log(reason)
-            client.broadcast.to(roomId).emit('online', false)
+            client.broadcast.to(roomId).emit('online', {
+                isOnline: false,
+                userId: userId,
+            })
         })
     })
 })
