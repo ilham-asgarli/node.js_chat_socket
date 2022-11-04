@@ -15,7 +15,7 @@ mongo()
 
 io.on('connect', (client) => {
     client.on('join_room', (data) => {
-        const { userId, roomId } = data
+        const roomId = data.roomId
         client.join(roomId)
 
         /*io.to(room).emit('join', {
