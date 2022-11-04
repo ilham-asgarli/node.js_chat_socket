@@ -11,10 +11,12 @@ app.get('/', (req, res) => {
     res.send("Server is running.")
 })
 
+mongo()
+
 io.on('connect', (client) => {
     client.on('join_room', (data) => {
-        const { id, room } = data
-        client.join(room)
+        const { userId, roomId } = data
+        client.join(roomId)
 
         /*io.to(room).emit('join', {
             message: `${id} has joined the chat room`,
@@ -23,7 +25,7 @@ io.on('connect', (client) => {
         })*/
 
         message.find({
-            roomId: msg.room_id
+            roomId: roomId
         }).then((messages) => {
             client.emit('old_messages', messages)
         }).catch((err) => {
@@ -32,13 +34,13 @@ io.on('connect', (client) => {
 
         let typingTimerId
         client.on('typing', (data) => {
-            typingTimerId = typing(client, room, data, typingTimerId)
+            typingTimerId = typing(client, roomId, data, typingTimerId)
         })
 
         client.on('message', (data) => {
             console.log(data)
-            io.to(room).emit('message', {
-                id: id,
+            io.to(roomId).emit('message', {
+                userId: userId,
                 message: data.message,
             })
 

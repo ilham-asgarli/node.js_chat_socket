@@ -1,6 +1,6 @@
 var mongoose = require("mongoose")
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://chat:chat@0.zxfpl5s.mongodb.net/?retryWrites=true&w=majority"
+var MONGODB_URI = process.env.MONGODB_URI
 
 module.exports = () => {
     mongoose.connect(MONGODB_URI);
