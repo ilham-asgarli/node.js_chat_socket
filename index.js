@@ -30,6 +30,7 @@ io.on('connect', (client) => {
             io.to(roomId).emit('message', {
                 userId: data.userId,
                 message: data.message,
+                created_at: Date.now(),
             })
         })
     })
