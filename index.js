@@ -4,14 +4,14 @@ const http = require('http')
 const server = http.createServer(app)
 const { Server } = require("socket.io")
 const io = new Server(server)
-const mongo = require("./mongo")
-const message = require("./message")
+// const mongo = require("./mongo")
+// const message = require("./message")
 
 app.get('/', (req, res) => {
     res.send("Server is running.")
 })
 
-mongo()
+// mongo()
 
 io.on('connect', (client) => {
     client.on('join_room', (data) => {

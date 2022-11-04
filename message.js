@@ -1,8 +1,8 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var messageSchema = new Schema({
+const messageSchema = new Schema({
     message: String,
     roomId: String,
     userId: String,
