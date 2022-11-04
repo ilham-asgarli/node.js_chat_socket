@@ -12,6 +12,6 @@ module.exports = async () => {
     }).then((result) => {
         console.log("Mongo connected...")
     }).catch((err) => {
-        console.log(err)
+        console.log("Error:",err)
     })
 }
